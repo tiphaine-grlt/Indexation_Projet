@@ -15,16 +15,31 @@
 ## Démarrer l’infrastructure (Kafka, Logstash, Elasticsearch, Kibana)
 
 Dans le dossier du projet :
+
+```bash
 docker compose up -d
+```
 
 Créer le topic Kafka (une seule fois)
+```bash
 docker exec -it $(docker ps -qf name=kafka) \
 kafka-topics --bootstrap-server kafka:29092 \
---create --topic meteo_api --partitions 1 --replication-factor 1
+--create --topic meteo_api \
+--partitions 1 --replication-factor 1
+```
 
 
 ## Mapping ElasticSearch :
 
+Ouvrir Kibana :
+
+```
+http://localhost:5601
+```
+
+Aller dans **Dev Tools** et exécuter :
+
+```json
 PUT _index_template/meteo_template
 {
   "index_patterns": ["meteo-*"],
@@ -53,9 +68,7 @@ PUT _index_template/meteo_template
       "properties": {
         "@timestamp": { "type": "date" },
         "meteo_hour": { "type": "date" },
-        
         "source": { "type": "keyword" },
-
         "city": {
           "type": "text",
           "fields": {
@@ -67,7 +80,6 @@ PUT _index_template/meteo_template
             }
           }
         },
-
         "search_text": {
           "type": "text",
           "fields": {
@@ -78,9 +90,7 @@ PUT _index_template/meteo_template
             }
           }
         },
-
         "location": { "type": "geo_point" },
-
         "temperature_2m": { "type": "float" },
         "precipitation": { "type": "float" },
         "wind_speed_10m": { "type": "float" }
@@ -88,3 +98,10 @@ PUT _index_template/meteo_template
     }
   }
 }
+```
+
+## Installer les dépendances Python
+
+```bash
+pip install requests kafka-python
+```
