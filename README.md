@@ -1,4 +1,4 @@
-# Indexation_Projet — Pipeline Kafka → Logstash → Elasticsearch → Kibana (API Open-Meteo)
+# Indexation_Projet
 
 ## Démarrer l’infrastructure (Kafka, Logstash, Elasticsearch, Kibana)
 
